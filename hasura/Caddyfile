@@ -1,0 +1,7 @@
+http://gql.tjmace.com {
+  redir https://{host}{uri}
+}
+
+https://gql.tjmace.com {
+  reverse_proxy graphql-engine:8080
+}

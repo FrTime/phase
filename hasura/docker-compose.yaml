@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  graphql-engine:
+    image: hasura/graphql-engine:latest
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://hasura:c9cSD7XxDgMWDqq@phase.ci0eitbhpjpg.us-east-2.rds.amazonaws.com:5432/test
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ddTfeRW39WPQeXPGyXdqwGdB&w@r@=_y
+    command:
+    - graphql-engine
+    - serve
+  caddy:
+    image: caddy/caddy
+    depends_on:
+    - "graphql-engine"
+    restart: always
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./Caddyfile:/etc/caddy/Caddyfile
+    - caddy_certs:/root/.caddy
+volumes:
+  caddy_certs:
